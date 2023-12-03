@@ -1,25 +1,36 @@
-import { useCallback, useEffect, useMemo, useState } from 'react'
+import {  useState, useEffect } from 'react'
 import React from 'react'
-import { Link, Outlet } from 'react-router-dom';
+import { Outlet, useParams } from 'react-router-dom';
 import MovieSearch from './../../components/Form/index';
-
+import { getMovieWithSearch } from 'api/api' 
+import MoviesList from 'components/MoviesList/MoviesList';
 
 const MoviesPage = () => {
   const [query, setQuery] = useState('')
+  const [movieList, setMovieList] = useState([])
+  const { movieId } = useParams(0)
+
   
   const handleSubmit = ({ query}) => {
-		setQuery(query)
-	}
-  console.log(query)
+    setQuery(query)
+    
+  }
 
+  
+  useEffect(() => {
+        const data = getMovieWithSearch(query)
+        data.then(movieList => { setMovieList(movieList) })
+
+  }, [query]);
+  console.log(query)
+  console.log(movieId)
+  console.log(movieList.results)
 
   return (
     <>
-     <div>
-        Movies
-      </div>
-      <MovieSearch submit={handleSubmit}/>
-      <Link to={'movieDetails/123'}>Details</Link>
+      {!movieId && <MovieSearch submit={handleSubmit} />}
+      {query && <MoviesList array={movieList.results } />}
+      
       <Outlet/>
   
     </>
