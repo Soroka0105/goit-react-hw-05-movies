@@ -1,12 +1,14 @@
+
+import { Link, useLocation } from "react-router-dom"
 import { MovieItem } from "components/Movie/Movie"
 
-const { Link } = require("react-router-dom")
-const MoviesList = ({ array }) => {
 
+const MoviesList = ({ array }) => {
+const location = useLocation()
     return (
-        array.map((el) => (
-            <Link key={el.id} to={`movies/movieDetails/${el.id}` }><MovieItem  elm={el} /></Link>
-    ))
+        array.map((el) => 
+            <Link key={el.id} to={`/movies/${el.id}` } state={{from: location}} ><MovieItem  elm={el} /></Link>
+    )
 )
 }
 export default MoviesList

@@ -1,26 +1,35 @@
 import MoviesList from "components/MoviesList/MoviesList"
 import { getTrendingMovies } from "api/api"
 import { useEffect, useState } from 'react'
+import { Loader } from "components/Loader"
 
 
 
 const HomePage = () => {
   const [movies, setMovies] = useState([])
-
-  
+  const [error, setError] = useState(null)
+  const [loader, setLoader] = useState(false)
 
   useEffect(() => {
-    const data = getTrendingMovies()
-
- data.then(
-   movies => {setMovies(prevMovies => [...movies.results])}
-  )
-  
-
+    fetchMovies()
   }, [])
 
+  const fetchMovies = async () => {
+   setLoader(true)
+    try {
+      const resp = await getTrendingMovies()
+      setMovies(resp.results)
+    } catch (error) {
+      setError(error.message)
+      console.error(error.message)
+    } finally {
+      setLoader(false)
+    }
+    
+  }
+
  
-console.log(movies)
+
 
 
 
@@ -28,8 +37,8 @@ console.log(movies)
 
   return (
     <>
-      <MoviesList array={movies } />
-     
+      {error && <h1>{error}</h1> }
+      {loader ? <Loader/> :<MoviesList array={movies } />}
     </>
     
   )

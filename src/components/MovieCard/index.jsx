@@ -1,16 +1,16 @@
 const MovieCard = ({ obj }) => {
-
+const {backdrop_path, imdb_id, title, vote_average, overview} = obj
     return (
         <>
             <div>
-                <img src={`https://image.tmdb.org/t/p/w500/${obj.backdrop_path
-}`} alt={obj.imdb_id} />
+                <img src={`https://image.tmdb.org/t/p/w500/${backdrop_path
+}`} alt={imdb_id} />
             </div>
 
             <div>
-            <p>{obj.title}</p>
-            <p>rating:{obj.vote_average}</p>
-            <span>{obj.overview }</span>
+            <p>{title}</p>
+            <p>rating:{vote_average}</p>
+            <span>{overview }</span>
     </div>
         </>
         

@@ -1,25 +1,29 @@
-import { useEffect, useState } from 'react'
-import { useSearchParams } from 'react-router-dom'
+import { useState } from 'react'
 
 
-const MovieSearch = ({ submit }) => {
+
+const MovieSearch = ({ onSubmit }) => {
     const [query, setQuery] = useState('')
-    const [searchParams, setSearchParams] = useSearchParams()
-    const handleChange = ({ target: { value } }) => {
+    // const [searchParams, setSearchParams] = useSearchParams()
+  const handleChange = e => {
+      
+    setQuery(e.target.value)
 		// setSearchParams({ search: value })
-		if (!value) setSearchParams({})
-		setQuery(value)
+		// if (!value) setSearchParams({})
+		// setQuery(value)
     }
-    const handleSubmit = (e) => {
-		e.preventDefault()
-		if (!query) return setSearchParams({})
-		setSearchParams({ search: query })
-		submit({ query: searchParams.get('search') })
+    const handleSubmit = e => {
+      e.preventDefault()
+    onSubmit(query)
+      setQuery('')
+		// if (!query) return setSearchParams({})
+		// setSearchParams({ search: query })
+		// submit({ query: searchParams.get('search') })
     }
-    useEffect(() => {
-		const value = searchParams.get('search')
-		if (value) setQuery(value)
-	}, [searchParams])
+  //   useEffect(() => {
+	// 	const value = searchParams.get('search')
+	// 	if (value) setQuery(value)
+	// }, [searchParams])
 
 
 

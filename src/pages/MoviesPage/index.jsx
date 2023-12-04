@@ -1,35 +1,49 @@
 import {  useState, useEffect } from 'react'
 import React from 'react'
-import { Outlet, useParams } from 'react-router-dom';
+import { Outlet } from 'react-router-dom';
 import MovieSearch from './../../components/Form/index';
 import { getMovieWithSearch } from 'api/api' 
 import MoviesList from 'components/MoviesList/MoviesList';
+import { Loader } from 'components/Loader';
 
 const MoviesPage = () => {
   const [query, setQuery] = useState('')
   const [movieList, setMovieList] = useState([])
-  const { movieId } = useParams(0)
+  const [error, setError] = useState(null)
+  const [loader, setLoader] = useState(false)
+  
 
   
-  const handleSubmit = ({ query}) => {
-    setQuery(query)
+  const handleSubmit = value => {
+    setQuery(value)
     
   }
-
-  
+ 
   useEffect(() => {
-        const data = getMovieWithSearch(query)
-        data.then(movieList => { setMovieList(movieList) })
+    const fetchMoviesList = async () => {
+   setLoader(true)
+    try {
+      const resp = await getMovieWithSearch(query)
+      console.log(resp.results)
+setMovieList(resp.results)
+    } catch (error) {
+      setError(error.message)
+    } finally {
+      setLoader(false)
+    }
+    }
+    fetchMoviesList()
 
   }, [query]);
-  console.log(query)
-  console.log(movieId)
-  console.log(movieList.results)
+  
+  
 
   return (
     <>
-      {!movieId && <MovieSearch submit={handleSubmit} />}
-      {query && <MoviesList array={movieList.results } />}
+      {error && <h1>{error}</h1>}
+      {loader ? <Loader/> :  <MovieSearch onSubmit={handleSubmit} />}
+     
+      {query && <MoviesList array={movieList} />}
       
       <Outlet/>
   

@@ -22,12 +22,12 @@ const App = () => {
       <Routes>
         <Route path='/' element={<Layout />}>
           <Route index element={<HomePage />} />
-          <Route path='movies' element={<MoviesPage />}>
-            <Route path='movieDetails/:movieId' element={<MovieDetailsPage />}>
+          <Route path='movies' element={<MoviesPage />}/>
+            <Route path='movies/:movieId' element={<MovieDetailsPage />}>
                 <Route path='reviews' element={<ReviewsPage />} />
                 <Route path='cast' element={<CastPage/> } />
             </Route>
-           </Route>
+           
         </Route>
         
       </Routes>
