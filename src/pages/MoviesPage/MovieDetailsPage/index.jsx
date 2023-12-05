@@ -29,8 +29,7 @@ const MovieDetailsPage = () => {
         if (!movieId) return
 
 }, [movieId]);
-    console.log(movieId)
-    console.log(movieObj)
+    
 
     
     return (

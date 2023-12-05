@@ -1,25 +1,41 @@
 import { useParams } from "react-router-dom"
 import { getMovieReviews } from "api/api"
 import { useState, useEffect } from "react"
+import { Loader } from "components/Loader"
 import Reviews from './../../../../components/reviews/index';
 
 const ReviewsPage = () => {
-const [reviews, setReviews] = useState([])
-const { movieId } = useParams(0)
-  console.log(movieId)
+  const [reviews, setReviews] = useState([])
+  const [loader, setLoader] = useState(false)
+  const [error, setError] = useState(null)
+  const { movieId } = useParams(0)
+  
   useEffect(() => {
-        const data = getMovieReviews(movieId)
-        data.then(reviews => { setReviews(reviews.results) })
+      if (!movieId) return
+    const fetchReviews = async () => {
+setLoader(true)
+      try {
+        const data = await getMovieReviews(movieId)
+        setReviews(data.results)
+      } catch (error) {
+        setError(error.message)
+      } finally {
+      setLoader(false)
+    }
+    }
+      
     
-
-        if (!movieId) return
+fetchReviews()
+      
 
 }, [movieId]);
-console.log(reviews)
     
   return (
     <>
-      <Reviews array={reviews} />
+      {error && <h1>{error}</h1>}
+      {loader && <Loader />}
+      {reviews.length > 0 ?<Reviews array={reviews} />:<h2>No Reviews</h2> }
+      
     </>
   )
 }
