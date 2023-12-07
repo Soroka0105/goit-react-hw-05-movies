@@ -1,11 +1,20 @@
 
-import MoviesPage from 'pages/MoviesPage';
+// import MoviesPage from 'pages/MoviesPage';
 import { Routes, Route } from 'react-router-dom'
+import { Suspense, lazy } from 'react'
 import Layout from './../Layout';
-import HomePage from 'pages/HomePage';
-import MovieDetailsPage from 'pages/MoviesPage/MovieDetailsPage';
-import ReviewsPage from 'pages/MoviesPage/MovieDetailsPage/ReviewsPage';
-import CastPage from 'pages/MoviesPage/MovieDetailsPage/CastPage';
+// import HomePage from 'pages/HomePage';
+// import MovieDetailsPage from 'pages/MoviesPage/MovieDetailsPage';
+// import ReviewsPage from 'pages/MoviesPage/MovieDetailsPage/ReviewsPage';
+// import CastPage from 'pages/MoviesPage/MovieDetailsPage/CastPage';
+
+
+const HomePage = lazy(() => import('../pages/HomePage/index'))
+const MoviesPage = lazy(() => import('../pages/MoviesPage/index'))
+const ReviewsPage = lazy(() => import('../pages/MoviesPage/MovieDetailsPage/ReviewsPage'))
+const CastPage = lazy(() => import('../pages/MoviesPage/MovieDetailsPage/CastPage'))
+const MovieDetailsPage = lazy(() => import('../pages/MoviesPage/MovieDetailsPage/index'))
+
 
 const App = () => {
   return (
@@ -19,7 +28,8 @@ const App = () => {
         color: '#010101'
       }}
     >
-      <Routes>
+      <Suspense fallback={<p>loading...</p>}>
+<Routes>
         <Route path='/' element={<Layout />}>
           <Route index element={<HomePage />} />
           <Route path='movies' element={<MoviesPage />}/>
@@ -31,6 +41,8 @@ const App = () => {
         </Route>
         
       </Routes>
+      </Suspense>
+      
     </div>
   );
 };
